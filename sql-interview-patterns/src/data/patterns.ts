@@ -24,6 +24,16 @@ import { p22 } from './patterns/p22';
 import { p23 } from './patterns/p23';
 import { p24 } from './patterns/p24';
 import { p25 } from './patterns/p25';
+import { p26 } from './patterns/p26';
+import { p27 } from './patterns/p27';
+import { p28 } from './patterns/p28';
+import { p29 } from './patterns/p29';
+import { p30 } from './patterns/p30';
+import { p31 } from './patterns/p31';
+import { p32 } from './patterns/p32';
+import { p33 } from './patterns/p33';
+import { p34 } from './patterns/p34';
+import { p35 } from './patterns/p35';
 
 /** All 50 patterns, in the order of the classic interview cheat-sheet. */
 export const PATTERNS: Pattern[] = [
@@ -52,6 +62,16 @@ export const PATTERNS: Pattern[] = [
   p23,
   p24,
   p25,
+  p26,
+  p27,
+  p28,
+  p29,
+  p30,
+  p31,
+  p32,
+  p33,
+  p34,
+  p35,
 ];
 
 export const TOTAL_QUESTIONS = PATTERNS.reduce((n, p) => n + p.questions.length, 0);
