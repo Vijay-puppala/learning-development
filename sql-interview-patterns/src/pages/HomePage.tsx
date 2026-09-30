@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PATTERNS } from '../data/patterns';
+import { ALL_QUESTION_IDS, PATTERN_META } from '../data/meta';
 import { CATEGORY_ORDER, type Category } from '../data/types';
 import { ProgressBar } from '../components/ProgressBar';
 import { countFor, resetAll } from '../lib/progress';
@@ -34,12 +34,12 @@ export function HomePage() {
   const [query, setQuery] = useState('');
   const [cat, setCat] = useState<Category | 'all'>('all');
 
-  const allIds = useMemo(() => PATTERNS.flatMap((p) => p.questions.map((q) => q.id)), []);
+  const allIds = ALL_QUESTION_IDS;
   const overall = countFor(allIds);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return PATTERNS.filter((p) => {
+    return PATTERN_META.filter((p) => {
       if (cat !== 'all' && p.category !== cat) return false;
       if (!needle) return true;
       return (
@@ -152,7 +152,7 @@ export function HomePage() {
           </div>
           <div className="grid">
             {g.items.map((p) => {
-              const ids = p.questions.map((q) => q.id);
+              const ids = p.questionIds;
               const c = countFor(ids);
               return (
                 <Link className="card" to={`/pattern/${p.slug}`} key={p.slug}>

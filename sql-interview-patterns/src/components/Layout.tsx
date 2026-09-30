@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { applyTheme, readTheme, type Theme } from '../lib/theme';
+import { TOTAL_QUESTIONS } from '../data/meta';
 
 export function Layout() {
   const [theme, setTheme] = useState<Theme>('system');
@@ -48,8 +49,8 @@ export function Layout() {
         <Outlet />
       </main>
       <footer className="site">
-        50 patterns · 500 questions · Reason first, reveal second. Progress is stored in this
-        browser only.
+        {TOTAL_QUESTIONS} questions across 50 patterns · Reason first, reveal second. Progress is
+        stored in this browser only.
       </footer>
     </>
   );

@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "gen": "node scripts/gen-index.mjs && tsx scripts/gen-meta.mjs",
+    "check": "tsx scripts/validate.mjs && tsx scripts/check-highlighter.mjs && tsc --noEmit"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -19,6 +21,7 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.2",
     "typescript": "^5.6.2",
-    "vite": "^5.4.8"
+    "vite": "^5.4.8",
+    "tsx": "^4.19.1"
   }
 }

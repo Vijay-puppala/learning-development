@@ -252,10 +252,10 @@ ORDER BY sort_key, revenue DESC;`,
 
 -- Otherwise: generate the union text from the catalog, then execute it
 SELECT STRING_AGG(FORMAT('SELECT * FROM %I', table_name),
-                  E'\nUNION ALL\n' ORDER BY table_name)
+                  E'\\nUNION ALL\\n' ORDER BY table_name)
 FROM information_schema.tables
 WHERE table_schema = 'public'
-  AND table_name LIKE 'sales\_2024\___';`,
+  AND table_name LIKE 'sales\\_2024\\___';`,
       explanation: 'Partitioning is the real answer: the planner prunes irrelevant partitions from a normal query, so no union is ever written and adding a month needs no code change. Generated SQL is the pragmatic fallback, and FORMAT with %I quotes the identifiers so a malicious or odd table name cannot inject.',
       dialect: 'Declarative partitioning is PostgreSQL 10+, MySQL 5.7+, Oracle and SQL Server (partitioned tables). The catalog view is information_schema.tables in most engines; SQL Server also has sys.tables.',
     },
