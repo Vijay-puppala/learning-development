@@ -3,3 +3,5 @@ dist
 .vercel
 *.local
 *.tsbuildinfo
+dist-artifact
+artifact

@@ -13,6 +13,7 @@
   --ok-soft: #e0f3e9;
   --warn: #9a5b00;
   --warn-soft: #fbeeda;
+  --danger: #c0392b;
   --code-bg: #10131a;
   --code-text: #e6e9ef;
   --radius: 12px;
@@ -39,6 +40,7 @@
     --ok-soft: #14261d;
     --warn: #f0b45e;
     --warn-soft: #2a2114;
+    --danger: #ff8a7a;
     --code-bg: #0a0d13;
     --code-text: #e6e9ef;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
@@ -61,6 +63,7 @@
   --ok-soft: #14261d;
   --warn: #f0b45e;
   --warn-soft: #2a2114;
+  --danger: #ff8a7a;
   --code-bg: #0a0d13;
   --code-text: #e6e9ef;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
@@ -69,7 +72,9 @@
 
 * { box-sizing: border-box; }
 
-html, body { margin: 0; padding: 0; }
+/* No padding reset on html: the artifact host pads :root by the phone's
+   safe-area insets, and zeroing it would push content under the system bars. */
+body { margin: 0; }
 
 body {
   background: var(--bg);
@@ -88,7 +93,7 @@ a:hover { text-decoration: underline; }
 /* ---------- header ---------- */
 .topbar {
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top, 0px);
   z-index: 20;
   background: color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter: blur(10px);
@@ -500,3 +505,10 @@ footer.site {
   .think { margin-left: 13px; margin-right: 13px; }
   .overall { gap: 12px; }
 }
+
+.btn.outline.danger {
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--border));
+  background: color-mix(in srgb, var(--danger) 8%, var(--bg-elev));
+}
+.btn.outline.danger:hover { border-color: var(--danger); }

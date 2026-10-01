@@ -1,25 +1,39 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { highlight } from '../lib/sqlHighlight';
 
 export function CodeBlock({ code }: { code: string }) {
-  const [copied, setCopied] = useState(false);
+  const [label, setLabel] = useState<'idle' | 'copied' | 'selected'>('idle');
+  const preRef = useRef<HTMLPreElement>(null);
+
+  /** Some embeddings refuse clipboard writes; select the SQL instead so the
+   *  reader can copy it by hand rather than getting a button that does nothing. */
+  const selectInstead = () => {
+    const pre = preRef.current;
+    if (!pre) return;
+    const range = document.createRange();
+    range.selectNodeContents(pre);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+    setLabel('selected');
+  };
 
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1400);
+      setLabel('copied');
     } catch {
-      /* clipboard blocked — the code is still selectable */
+      selectInstead();
     }
+    setTimeout(() => setLabel('idle'), 1800);
   };
 
   return (
     <div className="code">
       <button className="copy" onClick={copy} type="button">
-        {copied ? 'Copied' : 'Copy'}
+        {label === 'copied' ? 'Copied' : label === 'selected' ? 'Selected — press ⌘C' : 'Copy'}
       </button>
-      <pre>
+      <pre ref={preRef}>
         <code dangerouslySetInnerHTML={{ __html: highlight(code) }} />
       </pre>
     </div>

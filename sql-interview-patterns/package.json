@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "gen": "node scripts/gen-index.mjs && tsx scripts/gen-meta.mjs",
-    "check": "tsx scripts/validate.mjs && tsx scripts/check-highlighter.mjs && tsc --noEmit"
+    "check": "tsx scripts/validate.mjs && tsx scripts/check-highlighter.mjs && tsc --noEmit",
+    "build:artifact": "vite build --config vite.artifact.config.ts && node scripts/build-artifact.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

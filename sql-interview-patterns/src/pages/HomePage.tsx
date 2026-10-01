@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ALL_QUESTION_IDS, PATTERN_META } from '../data/meta';
 import { CATEGORY_ORDER, type Category } from '../data/types';
@@ -33,6 +33,15 @@ export function HomePage() {
   useProgress();
   const [query, setQuery] = useState('');
   const [cat, setCat] = useState<Category | 'all'>('all');
+  // Two-step confirmation rather than confirm(), which some embeddings
+  // (the artifact viewer among them) answer false without showing a dialog.
+  const [confirmingReset, setConfirmingReset] = useState(false);
+
+  useEffect(() => {
+    if (!confirmingReset) return;
+    const t = setTimeout(() => setConfirmingReset(false), 6000);
+    return () => clearTimeout(t);
+  }, [confirmingReset]);
 
   const allIds = ALL_QUESTION_IDS;
   const overall = countFor(allIds);
@@ -95,17 +104,28 @@ export function HomePage() {
           <div className="bar-wrap">
             <ProgressBar solved={overall.solved} peeked={overall.peeked} total={allIds.length} />
           </div>
-          {overall.solved + overall.peeked > 0 && (
-            <button
-              className="btn outline"
-              type="button"
-              onClick={() => {
-                if (confirm('Clear all progress stored in this browser?')) resetAll();
-              }}
-            >
-              Reset progress
-            </button>
-          )}
+          {overall.solved + overall.peeked > 0 &&
+            (confirmingReset ? (
+              <>
+                <button
+                  className="btn outline danger"
+                  type="button"
+                  onClick={() => {
+                    resetAll();
+                    setConfirmingReset(false);
+                  }}
+                >
+                  Erase {overall.solved + overall.peeked} — confirm
+                </button>
+                <button className="btn" type="button" onClick={() => setConfirmingReset(false)}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button className="btn outline" type="button" onClick={() => setConfirmingReset(true)}>
+                Reset progress
+              </button>
+            ))}
         </div>
       </section>
 
